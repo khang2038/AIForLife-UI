@@ -15,7 +15,8 @@ import Box from '@mui/material/Box';
 // project import
 import MainCard from 'components/MainCard';
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
-import MonthlyBarChart from 'components/chart/MonthlyBarChart';
+// import MonthlyBarChart from 'components/chart/MonthlyBarChart';
+import EmotionDonutChart from 'components/chart/EmotionDonutChart';
 import ReportAreaChart from 'components/chart/ReportAreaChart';
 import ConversationEmotionCard from 'components/cards/statistics/ConversationEmotionCard';
 import SaleReportCard from 'components/cards/statistics/SaleReportCard';
@@ -30,6 +31,11 @@ import avatar1 from 'assets/images/users/avatar-1.png';
 import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
+
+import { getDetails } from 'services/detailsService';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
 // avatar style
 const avatarSX = {
@@ -50,61 +56,67 @@ const actionSX = {
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
-export default function DashboardDefault() {
+export default function CallDetails() {
+  const { id } = useParams();
+
+  const [details, setDetails] = useState({ emotions: [1, 2] });
+  
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const details = await getDetails(id);
+        setDetails(details.data);
+      } catch (error) {
+        console.error('Error fetching details:', error);
+      }
+    };
+
+    fetchDetails();
+  }, []);
+
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}
       <Grid item xs={12} sx={{ mb: -2.25 }}>
-        <Typography variant="h5">Tổng quan</Typography>
+        <Typography variant="h5">Dashboard</Typography>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Số lượng cuộc gọi đã hoàn thành" count="4,42,236" percentage={59.3} extra="35,000" />
+        <AnalyticEcommerce title="Khách hàng" count="Nguyễn Văn Hà" percentage={59.3} extra="35,000" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Số lượng cuộc gọi chưa hoàn thành" count="78,250" percentage={70.5} extra="8,900" />
+        <AnalyticEcommerce title="Thời gian cuộc gọi" count="10m20s" percentage={70.5} extra="8,900" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Số lượng cuộc gọi đã được phân tích" count="18,800" percentage={27.4} isLoss color="warning" extra="1,943" />
+        <AnalyticEcommerce title="Điểm số giọng nói" count="73%" percentage={27.4} isLoss color="warning" extra="1,943" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Số lượng cuộc gọi chưa phân tích" count="$35,078" percentage={27.4} isLoss color="warning" extra="$20,395" />
+        <AnalyticEcommerce title="Điểm số nội dung" count="57%" percentage={27.4} isLoss color="warning" extra="$20,395" />
       </Grid>
 
       <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
-      <Grid item xs={12}>
-        <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item>
-            <Typography variant="h5">Danh sách khách Hàng</Typography>
-          </Grid>
-          <Grid item />
-        </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
-          <CustomersTable />
-        </MainCard>
-      </Grid>
-
       {/* row 2 */}
       <Grid item xs={12} md={7} lg={8}>
-        <ConversationEmotionCard />
+        <ConversationEmotionCard emotions={details.emotions} />
       </Grid>
       <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Typography variant="h5">Income Overview</Typography>
+            <Typography variant="h5">Sentiment Segmentation</Typography>
           </Grid>
           <Grid item />
         </Grid>
         <MainCard sx={{ mt: 2 }} content={false}>
-          <Box sx={{ p: 3, pb: 0 }}>
+          {/* <Box sx={{ p: 3, pb: 1 }}>
             <Stack spacing={2}>
               <Typography variant="h6" color="text.secondary">
                 This Week Statistics
               </Typography>
               <Typography variant="h3">$7,650</Typography>
             </Stack>
-          </Box>
-          <MonthlyBarChart />
+          </Box> */}
+          <EmotionDonutChart />
+          <EmotionDonutChart isPie={true} />
         </MainCard>
       </Grid>
 

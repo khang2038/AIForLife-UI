@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "e1c0a9a4-dada-4501-bb2e-3fc92a24c343",
+		"name": "AI4LIFE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38336932"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "api/customer/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fullName\": \"Lê Hồng Phong\",\r\n  \"phoneNumber\": \"0699878542\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/customer/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"customer",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "api/admin/contact-customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ai4lifespring.onrender.com/api/admin/contact-customer",
+							"protocol": "https",
+							"host": [
+								"ai4lifespring",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"admin",
+								"contact-customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/admin/review-call-history",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FastAPI",
+			"item": [
+				{
+					"name": "http://127.0.0.1:8000/process-audio/",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Kin Tu/Documents/RecordProcessing/Audio/Thân Thiện/Thân Thiện_Câu 6_TEST.wav"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/process-audio/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"process-audio",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

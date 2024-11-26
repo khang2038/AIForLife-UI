@@ -7,6 +7,8 @@ import { useTheme } from '@mui/material/styles';
 // third-party
 import ReactApexChart from 'react-apexcharts';
 
+import { range } from 'lodash';
+
 // chart options
 const areaChartOptions = {
   chart: {
@@ -30,7 +32,7 @@ const areaChartOptions = {
 
 // ==============================|| INCOME AREA CHART ||============================== //
 
-export default function IncomeAreaChart({ slot }) {
+export default function EmotionAreaChart({ slot, data }) {
   const theme = useTheme();
 
   const { primary, secondary } = theme.palette.text;
@@ -43,33 +45,18 @@ export default function IncomeAreaChart({ slot }) {
       ...prevState,
       colors: [theme.palette.primary.main, theme.palette.primary[700]],
       xaxis: {
-        categories:
-          slot === 'month'
-            ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        categories: range(1, data?.length, 1), // start, end, step
         labels: {
           style: {
-            colors: [
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary,
-              secondary
-            ]
+            colors: Array(data?.length).fill(secondary)
           }
         },
         axisBorder: {
           show: true,
           color: line
         },
-        tickAmount: slot === 'month' ? 11 : 7
+        // tickAmount: slot === 'month' ? 11 : 7
+        tickAmount: data?.length
       },
       yaxis: {
         labels: {
@@ -82,7 +69,7 @@ export default function IncomeAreaChart({ slot }) {
         borderColor: line
       }
     }));
-  }, [primary, secondary, line, theme, slot]);
+  }, [primary, secondary, line, theme, slot, data]);
 
   const [series, setSeries] = useState([
     {
@@ -98,11 +85,11 @@ export default function IncomeAreaChart({ slot }) {
   useEffect(() => {
     setSeries([
       {
-        name: 'Page Views',
+        name: 'Speech',
         data: slot === 'month' ? [76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 115, 35] : [31, 40, 28, 51, 42, 109, 100]
       },
       {
-        name: 'Sessions',
+        name: 'Content',
         data: slot === 'month' ? [110, 60, 150, 35, 60, 36, 26, 45, 65, 52, 53, 41] : [11, 32, 45, 32, 34, 52, 41]
       }
     ]);
@@ -111,4 +98,4 @@ export default function IncomeAreaChart({ slot }) {
   return <ReactApexChart options={options} series={series} type="area" height={450} />;
 }
 
-IncomeAreaChart.propTypes = { slot: PropTypes.string };
+EmotionAreaChart.propTypes = { slot: PropTypes.string, data: PropTypes.array };
