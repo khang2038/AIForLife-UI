@@ -4,10 +4,11 @@ import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import Dashboard from 'layout/Dashboard';
 
+const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 const Color = Loadable(lazy(() => import('pages/component-overview/color')));
 const Typography = Loadable(lazy(() => import('pages/component-overview/typography')));
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
+const CallDetails = Loadable(lazy(() => import('pages/call-details/index')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
@@ -46,6 +47,11 @@ const MainRoutes = {
     {
       path: 'typography',
       element: <Typography />
+    },
+    {
+      // path: 'call-details/:id',
+       path: 'call-details',
+      element: <CallDetails />
     }
   ]
 };
