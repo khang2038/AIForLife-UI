@@ -50,7 +50,7 @@ const MainRoutes = {
     },
     {
       // path: 'call-details/:id',
-       path: 'call-details',
+      path: 'call-details/:id',
       element: <CallDetails />
     }
   ]
