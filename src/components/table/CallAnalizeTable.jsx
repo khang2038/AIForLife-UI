@@ -12,10 +12,22 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import chunk_1 from 'assets/audio/chunk_1.wav';
-import chunk_2 from 'assets/audio/chunk_2.wav';
-import chunk_3 from 'assets/audio/chunk_3.wav';
-import chunk_4 from 'assets/audio/chunk_4.wav';
+import chunk_1_Hung from 'assets/audio/chunk_1_Hung.wav';
+import chunk_1_Khang from 'assets/audio/chunk_1_Khang.wav';
+import chunk_1_Phong from 'assets/audio/chunk_1_Phong.wav';
+import chunk_1_Vinh from 'assets/audio/chunk_1_Vinh.wav';
+import chunk_2_Hung from 'assets/audio/chunk_2_Hung.wav';
+import chunk_2_Khang from 'assets/audio/chunk_2_Khang.wav';
+import chunk_2_Phong from 'assets/audio/chunk_2_Phong.wav';
+import chunk_2_Vinh from 'assets/audio/chunk_2_Vinh.wav';
+import chunk_3_Hung from 'assets/audio/chunk_3_Hung.wav';
+import chunk_3_Khang from 'assets/audio/chunk_3_Khang.wav';
+import chunk_3_Phong from 'assets/audio/chunk_3_Phong.wav';
+import chunk_3_Vinh from 'assets/audio/chunk_3_Vinh.wav';
+import chunk_4_Hung from 'assets/audio/chunk_4_Hung.wav';
+import chunk_4_Khang from 'assets/audio/chunk_4_Khang.wav';
+import chunk_4_Phong from 'assets/audio/chunk_4_Phong.wav';
+import chunk_4_Vinh from 'assets/audio/chunk_4_Vinh.wav';
 
 // project import
 import Dot from 'components/@extended/Dot';
@@ -147,21 +159,59 @@ export default function CallAnalizeTable({ details }) {
                       aria-label={`Call ${row.fullName}`}
                       onClick={() => {
                         let audioFile;
-                        switch (index) {
-                          case 0:
-                            audioFile = chunk_1;
+                        const fileName = row.file.replace('.wav', '');
+
+                        switch (fileName) {
+                          case 'chunk_1_Hung':
+                            audioFile = chunk_1_Hung;
                             break;
-                          case 1:
-                            audioFile = chunk_2;
+                          case 'chunk_1_Khang':
+                            audioFile = chunk_1_Khang;
                             break;
-                          case 2:
-                            audioFile = chunk_3;
+                          case 'chunk_1_Phong':
+                            audioFile = chunk_1_Phong;
                             break;
-                          case 3:
-                            audioFile = chunk_4;
+                          case 'chunk_1_Vinh':
+                            audioFile = chunk_1_Vinh;
+                            break;
+                          case 'chunk_2_Hung':
+                            audioFile = chunk_2_Hung;
+                            break;
+                          case 'chunk_2_Khang':
+                            audioFile = chunk_2_Khang;
+                            break;
+                          case 'chunk_2_Phong':
+                            audioFile = chunk_2_Phong;
+                            break;
+                          case 'chunk_2_Vinh':
+                            audioFile = chunk_2_Vinh;
+                            break;
+                          case 'chunk_3_Hung':
+                            audioFile = chunk_3_Hung;
+                            break;
+                          case 'chunk_3_Khang':
+                            audioFile = chunk_3_Khang;
+                            break;
+                          case 'chunk_3_Phong':
+                            audioFile = chunk_3_Phong;
+                            break;
+                          case 'chunk_3_Vinh':
+                            audioFile = chunk_3_Vinh;
+                            break;
+                          case 'chunk_4_Hung':
+                            audioFile = chunk_4_Hung;
+                            break;
+                          case 'chunk_4_Khang':
+                            audioFile = chunk_4_Khang;
+                            break;
+                          case 'chunk_4_Phong':
+                            audioFile = chunk_4_Phong;
+                            break;
+                          case 'chunk_4_Vinh':
+                            audioFile = chunk_4_Vinh;
                             break;
                           default:
-                            audioFile = chunk_1;
+                            audioFile = chunk_1_Hung;
                             break;
                         }
 
