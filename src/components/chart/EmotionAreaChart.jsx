@@ -59,14 +59,14 @@ export default function EmotionAreaChart({ slot, data1, title1, data2, title2 })
         tickAmount: data1?.length
       },
       yaxis: {
-        labels: {
-          style: {
-            colors: [secondary]
-          }
+      labels: {
+        style: {
+        colors: [secondary]
         }
+      }
       },
       grid: {
-        borderColor: line
+      borderColor: line
       }
     }));
   }, [theme, slot, data1, data2]);

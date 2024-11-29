@@ -1,40 +1,21 @@
 import PropTypes from 'prop-types';
 // material-ui
 import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import React from 'react';
+import { getAllDetails } from 'services/detailsService';
 
-// third-party
-import { NumericFormat } from 'react-number-format';
-
-// project import
-import Dot from 'components/@extended/Dot';
-
-function createData(tracking_no, name, fat, carbs, protein) {
-  return { tracking_no, name, fat, carbs, protein };
+function createData(callHistoryId, fullNameEmployee, task, duration) {
+  return { callHistoryId, fullNameEmployee, task, duration };
 }
 
-const rows = [
-  createData(84564564, 'Camera Lens', 40, 2, 40570),
-  createData(98764564, 'Laptop', 300, 0, 180139),
-  createData(98756325, 'Mobile', 355, 1, 90989),
-  createData(98652366, 'Handset', 50, 1, 10239),
-  createData(13286564, 'Computer Accessories', 100, 1, 83348),
-  createData(86739658, 'TV', 99, 0, 410780),
-  createData(13256498, 'Keyboard', 125, 2, 70999),
-  createData(98753263, 'Mouse', 89, 2, 10570),
-  createData(98753275, 'Desktop', 185, 1, 98063),
-  createData(98753291, 'Chair', 100, 0, 14001)
-];
-
-function descendingComparator(a, b, orderBy) {
+function descendingComparator(a, b, orderBy) { 
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -62,35 +43,34 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'tracking_no',
+    id: 'callHistoryId',
     align: 'left',
     disablePadding: false,
-    label: 'Tracking No.'
+    label: 'Mã cuộc gọi'
   },
   {
-    id: 'name',
+    id: 'fullNameEmployee',
     align: 'left',
     disablePadding: true,
-    label: 'Product Name'
+    label: 'Nhân viên'
   },
   {
-    id: 'fat',
-    align: 'right',
-    disablePadding: false,
-    label: 'Total Order'
-  },
-  {
-    id: 'carbs',
+    id: 'typeTask',
     align: 'left',
     disablePadding: false,
-
-    label: 'Status'
+    label: 'Mục tiêu'
   },
   {
-    id: 'protein',
+    id: 'durationFile',
+    align: 'left',
+    disablePadding: false,
+    label: 'Thời gian cuộc gọi'
+  },
+  {
+    id: 'action',
     align: 'right',
     disablePadding: false,
-    label: 'Total Amount'
+    label: 'Hành động'
   }
 ];
 
@@ -115,41 +95,23 @@ function OrderTableHead({ order, orderBy }) {
   );
 }
 
-function OrderStatus({ status }) {
-  let color;
-  let title;
-
-  switch (status) {
-    case 0:
-      color = 'warning';
-      title = 'Pending';
-      break;
-    case 1:
-      color = 'success';
-      title = 'Approved';
-      break;
-    case 2:
-      color = 'error';
-      title = 'Rejected';
-      break;
-    default:
-      color = 'primary';
-      title = 'None';
-  }
-
-  return (
-    <Stack direction="row" spacing={1} alignItems="center">
-      <Dot color={color} />
-      <Typography>{title}</Typography>
-    </Stack>
-  );
-}
-
 // ==============================|| ORDER TABLE ||============================== //
 
 export default function OrderTable() {
   const order = 'asc';
-  const orderBy = 'tracking_no';
+  const orderBy = 'callHistoryId';
+  const [data, setData] = React.useState([]);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const response = await getAllDetails();
+      const newData = response.data.map((item) => {
+        const row = createData(item.callHistoryId, item.fullNameEmployee, item.typeTask, item.durationFile);
+        return row;
+      })
+      setData(newData);
+    };
+    fetchData();
+  }, []);
 
   return (
     <Box>
@@ -166,32 +128,30 @@ export default function OrderTable() {
         <Table aria-labelledby="tableTitle">
           <OrderTableHead order={order} orderBy={orderBy} />
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-              const labelId = `enhanced-table-checkbox-${index}`;
+              {stableSort(data, getComparator(order, orderBy)).map((row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  tabIndex={-1}
-                  key={row.tracking_no}
-                >
-                  <TableCell component="th" id={labelId} scope="row">
-                    <Link color="secondary"> {row.tracking_no}</Link>
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell align="right">{row.fat}</TableCell>
-                  <TableCell>
-                    <OrderStatus status={row.carbs} />
-                  </TableCell>
-                  <TableCell align="right">
-                    <NumericFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
+                return (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    tabIndex={-1}
+                    key={row.callHistoryId}
+                  >
+                    <TableCell component="th" id={labelId} scope="row">
+                      <Link color="secondary"> {row.callHistoryId}</Link>
+                    </TableCell>
+                    <TableCell align='left'>{row.fullNameEmployee}</TableCell>
+                    <TableCell align="left">{row.task}</TableCell>
+                    <TableCell align="left">{row.duration}s</TableCell>
+                    <TableCell align="right">
+                      <Link href={"/free/call-details/" + row.callHistoryId} color="secondary">Xem chi tiết</Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody> 
         </Table>
       </TableContainer>
     </Box>
@@ -199,5 +159,3 @@ export default function OrderTable() {
 }
 
 OrderTableHead.propTypes = { order: PropTypes.any, orderBy: PropTypes.string };
-
-OrderStatus.propTypes = { status: PropTypes.number };

@@ -26,7 +26,7 @@ const barChartOptions = {
     enabled: false
   },
   xaxis: {
-    categories: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+    categories: ['Rất Tốt', 'Tốt', 'Bình thường', 'Khá', 'Tệ'],
     axisBorder: {
       show: false
     },
@@ -52,7 +52,7 @@ export default function MonthlyBarChart() {
 
   const [series] = useState([
     {
-      data: [80, 95, 70, 42, 65, 55, 78]
+      data: [70, 25, 50, 10, 3]
     }
   ]);
 
