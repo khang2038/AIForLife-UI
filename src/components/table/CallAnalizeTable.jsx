@@ -12,6 +12,10 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import chunk_1 from 'assets/audio/chunk_1.wav';
+import chunk_2 from 'assets/audio/chunk_2.wav';
+import chunk_3 from 'assets/audio/chunk_3.wav';
+import chunk_4 from 'assets/audio/chunk_4.wav';
 
 // project import
 import Dot from 'components/@extended/Dot';
@@ -141,7 +145,29 @@ export default function CallAnalizeTable({ details }) {
                     <IconButton
                       color="success"
                       aria-label={`Call ${row.fullName}`}
-                      onClick={() => console.log(`Calling ${row.phoneNumber}`)}
+                      onClick={() => {
+                        let audioFile;
+                        switch (index) {
+                          case 0:
+                            audioFile = chunk_1;
+                            break;
+                          case 1:
+                            audioFile = chunk_2;
+                            break;
+                          case 2:
+                            audioFile = chunk_3;
+                            break;
+                          case 3:
+                            audioFile = chunk_4;
+                            break;
+                          default:
+                            audioFile = chunk_1;
+                            break;
+                        }
+
+                        const ringtone = new Audio(audioFile);
+                        ringtone.play();
+                      }}
                     >
                       <PlayArrowIcon />
                     </IconButton>
