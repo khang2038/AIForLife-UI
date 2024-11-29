@@ -1,22 +1,30 @@
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // material-ui
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { getCustomers } from 'services/customersService';
-import IconButton from '@mui/material/IconButton';
+import {
+  Link,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Box,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 
 // project import
 import Dot from 'components/@extended/Dot';
-import { useEffect, useState } from 'react';
+import { getCustomers } from 'services/customersService';
 
 const headCells = [
   {
@@ -107,6 +115,25 @@ function OrderStatus({ status }) {
 
 export default function CustomersTable() {
   const [customers, setCustomers] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+  const handleOpen = (customer) => {
+    setSelectedCustomer(customer);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedCustomer(null);
+  };
+
+  const handleCall = () => {
+    if (selectedCustomer) {
+      window.location.href = `tel:${selectedCustomer.phoneNumber}`;
+    }
+    handleClose();
+  };
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -157,11 +184,7 @@ export default function CustomersTable() {
                   </TableCell>
                   <TableCell align="right">{row.typeTask}</TableCell>
                   <TableCell align="right">
-                    <IconButton
-                      color="success"
-                      aria-label={`Call ${row.fullName}`}
-                      onClick={() => console.log(`Calling ${row.phoneNumber}`)}
-                    >
+                    <IconButton color="success" aria-label={`Call ${row.fullName}`} onClick={() => handleOpen(row)}>
                       <PhoneIcon />
                     </IconButton>
                   </TableCell>
@@ -171,6 +194,24 @@ export default function CustomersTable() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Modal */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Gọi điện thoại</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn có muốn gọi tới số <strong>{selectedCustomer?.phoneNumber}</strong> của <strong>{selectedCustomer?.fullName}</strong> không?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Hủy
+          </Button>
+          <Button onClick={handleCall} color="primary" autoFocus>
+            Gọi
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
