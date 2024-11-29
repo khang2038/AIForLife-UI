@@ -47,10 +47,10 @@ export default function CallDetails() {
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}
       <Grid item xs={12} sx={{ mb: -2.25 }}>
-        <Typography variant="h5">Call Overview</Typography>
+        <Typography variant="h5">Tổng quan Cuộc gọi</Typography>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Khách hàng" count={details?.fullNameEmployee} percentage={59.3} extra="35,000" />
+        <AnalyticEcommerce title="Nhân viên" count={details?.fullNameEmployee}  extra="35,000" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce title="Thời gian cuộc gọi" count={details?.durationFile} percentage={70.5} extra="8,900" />
@@ -85,7 +85,7 @@ export default function CallDetails() {
       <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Typography variant="h5">Sentiment Segmentation</Typography>
+            <Typography variant="h5">Thành phần cảm xúc</Typography>
           </Grid>
           <Grid item />
         </Grid>
@@ -109,9 +109,9 @@ export default function CallDetails() {
           </Grid>
           <Grid item />
         </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
+        {/* <MainCard sx={{ mt: 2 }} content={false}>
           <CallAnalizeTable details={details} />
-        </MainCard>
+        </MainCard> */}
       </Grid>
     </Grid>
   );
