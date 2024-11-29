@@ -109,9 +109,9 @@ export default function CallDetails() {
           </Grid>
           <Grid item />
         </Grid>
-        {/* <MainCard sx={{ mt: 2 }} content={false}>
+        <MainCard sx={{ mt: 2 }} content={false}>
           <CallAnalizeTable details={details} />
-        </MainCard> */}
+        </MainCard>
       </Grid>
     </Grid>
   );

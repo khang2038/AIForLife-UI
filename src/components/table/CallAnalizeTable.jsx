@@ -133,10 +133,10 @@ export default function CallAnalizeTable({ details }) {
                   <TableCell component="th" id={labelId} scope="row">
                     <Link color="secondary"> {row?.duration}</Link>
                   </TableCell>
-                  <TableCell align="right">{details?.segmentAnalysisObject?.data[index]?.text}</TableCell>
+                  <TableCell align="right">{details?.segmentAnalysisObject?.data?.[index]?.text}</TableCell>
                   <TableCell>{row.file}</TableCell>
                   <TableCell align="right">{row.emotion}</TableCell>
-                  <TableCell align="right">{details?.segmentAnalysisObject?.data[index]?.sentiment}</TableCell>
+                  <TableCell align="right">{details?.segmentAnalysisObject?.data?.[index]?.sentiment}</TableCell>
                   <TableCell align="right">
                     <IconButton
                       color="success"
