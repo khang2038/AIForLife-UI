@@ -29,20 +29,20 @@ export default function CallDetails() {
     const fetchDetails = async () => {
       try {
         const response = await getDetails(id);
-        setDetails(response.data);
+        const fetchedDetails = response.data;
+        setDetails(fetchedDetails);
 
-        const conclusion = details?.segmentAnalysisDetailObject?.conclusion; // Sai trong database, trường đúng là segmentAnalysisObject
+        const conclusion = fetchedDetails?.segmentAnalysisObject?.conclusion; // Sửa đúng trường
         setPositiveText(conclusion['Tích cực'] + conclusion['Bình thường']);
 
-        setPositiveSpeech(details?.reviewPercentageSpeechObject?.overview_percentage?.positive_percentage);
+        setPositiveSpeech(fetchedDetails?.reviewPercentageSpeechObject?.overview_percentage?.positive_percentage);
       } catch (error) {
         console.error('Error fetching details:', error);
       }
     };
 
     fetchDetails();
-  }, [details]);
-
+  }, [id]);
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}

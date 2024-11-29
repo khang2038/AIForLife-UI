@@ -18,9 +18,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
+  Button,
+  Avatar
 } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
+import CallEndIcon from '@mui/icons-material/CallEnd';
 
 // project import
 import Dot from 'components/@extended/Dot';
@@ -116,7 +118,30 @@ function OrderStatus({ status }) {
 export default function CustomersTable() {
   const [customers, setCustomers] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openCalling, setOpenCalling] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [callTime, setCallTime] = useState(0);
+
+  useEffect(() => {
+    let timer;
+    if (openCalling) {
+      timer = setInterval(() => {
+        setCallTime((prev) => prev + 1);
+      }, 1000);
+    } else {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [openCalling]);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, '0');
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  };
 
   const handleOpen = (customer) => {
     setSelectedCustomer(customer);
@@ -129,10 +154,13 @@ export default function CustomersTable() {
   };
 
   const handleCall = () => {
-    if (selectedCustomer) {
-      window.location.href = `tel:${selectedCustomer.phoneNumber}`;
-    }
-    handleClose();
+    setOpen(false);
+    setOpenCalling(true);
+  };
+
+  const handleEndCall = () => {
+    setOpenCalling(false);
+    setCallTime(0);
   };
 
   useEffect(() => {
@@ -211,6 +239,91 @@ export default function CustomersTable() {
             Gọi
           </Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog open={openCalling} onClose={handleEndCall} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ fontSize: '1.5rem', textAlign: 'center' }}>Đang gọi...</DialogTitle>
+        <DialogContent sx={{ textAlign: 'center', padding: '24px' }}>
+          {/* Avatar với hiệu ứng sóng tỏa */}
+          <Box
+            sx={{
+              position: 'relative',
+              display: 'inline-block',
+              marginBottom: 2,
+              mt: 10,
+              width: 120, // Tăng kích thước Avatar
+              height: 120
+            }}
+          >
+            <Avatar
+              src="/path-to-avatar.jpg"
+              sx={{
+                width: '100%',
+                height: '100%',
+                margin: '0 auto',
+                zIndex: 2,
+                position: 'relative'
+              }}
+            />
+            {/* Sóng tỏa quanh avatar */}
+            <Box
+              className="wave-effect"
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                borderRadius: '50%',
+                backgroundColor: 'rgba(63, 81, 181, 0.3)',
+                animation: 'wave-animation 2s infinite',
+                zIndex: 1
+              }}
+            />
+          </Box>
+
+          {/* Tên và số điện thoại */}
+          <Typography variant="h6">{selectedCustomer?.fullName}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            {selectedCustomer?.phoneNumber}
+          </Typography>
+
+          {/* Thời gian gọi */}
+          <Typography variant="h6" sx={{ marginTop: 2, fontWeight: 'bold' }}>
+            Thời gian: {formatTime(callTime)}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleEndCall}
+            color="error"
+            startIcon={<CallEndIcon />}
+            variant="contained"
+            fullWidth
+            sx={{ padding: '12px 0', fontSize: '1rem' }} // Tăng kích thước nút
+          >
+            Kết thúc
+          </Button>
+        </DialogActions>
+
+        {/* CSS cho hiệu ứng sóng */}
+        <style>
+          {`
+      @keyframes wave-animation {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(2.5);
+          opacity: 0;
+        }
+      }
+      .wave-effect {
+        animation: wave-animation 2s infinite;
+      }
+    `}
+        </style>
       </Dialog>
     </Box>
   );
