@@ -7,31 +7,43 @@ import Box from '@mui/material/Box';
 // third-party
 import ReactApexChart from 'react-apexcharts';
 
-// chart options
-const options = {
-  labels: ['Vui', 'Buồn', 'Giận', 'Mệt'],
-  plotOptions: {
-    pie: {
-      size: 180
-    }
-  },
-  dataLabels: {
-    enabled: false
-  }
-};
-
 // ==============================|| MONTHLY BAR CHART ||============================== //
 
-export default function EmotionDonutChart(isPie = false, sx) {
+export default function EmotionDonutChart(data, isPie = false, sx) {
   const theme = useTheme();
+
+  const [series, setSeries] = useState([]);
+  const [labels, setLabels] = useState([]);
+
+  useEffect(() => {
+    if (data?.data) {
+      setSeries(Object.values(data.data));
+      setLabels(Object.keys(data.data));
+    }
+  }, [data]);
+
+  const options = {
+    labels: labels,
+    plotOptions: {
+      pie: {
+        size: 180
+      }
+    },
+    dataLabels: {
+      enabled: true
+    },
+    legend: {
+      position: 'bottom'
+    }
+  };
+
   console.log(isPie);
+
   // const { primary, secondary } = theme.palette.text;
   // const info = theme.palette.info.light;
 
-  const [series, setSeries] = useState([44, 55, 13, 33]);
-
   return (
-    <Box id="chart" sx={{ bgcolor: 'transparent', ...sx }}>
+    <Box id="chart" sx={{ py: 4, bgcolor: 'transparent', ...sx }}>
       <ReactApexChart type={isPie ? 'pie' : 'donut'} series={series} options={options} />
     </Box>
   );

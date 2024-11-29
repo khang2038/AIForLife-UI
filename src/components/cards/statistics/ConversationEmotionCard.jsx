@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import Button from '@mui/material/Button';
@@ -14,8 +14,20 @@ import EmotionAreaChart from '../../chart/EmotionAreaChart';
 
 // ==============================|| DEFAULT - UNIQUE VISITOR ||============================== //
 
-export default function ConversationEmotionCard({ emotions }) {
+export default function ConversationEmotionCard({ data }) {
   const [slot, setSlot] = useState('sentence');
+  const [textScores, setTextScores] = useState([]);
+  const [speechScores, setSpeechScores] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      const textData = data?.segmentAnalysisObject?.detail || []; // Sai trong database, trường đúng là segmentAnalysisDetailObject
+      const speechData = data?.reviewSpeechDetailObject?.predictions_details || [];
+
+      setTextScores(textData.map((item) => (item?.percentPositive || 0) + (item?.percentNormal || 0)));
+      setSpeechScores(speechData.map((item) => item?.probabilityPositive || 0));
+    }
+  }, [data]);
 
   return (
     <>
@@ -46,11 +58,11 @@ export default function ConversationEmotionCard({ emotions }) {
       </Grid>
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Box sx={{ pt: 1, pr: 2 }}>
-          <EmotionAreaChart slot={slot} data={emotions} />
+          <EmotionAreaChart slot={slot} data1={textScores} title1="Content" data2={speechScores} title2="Speech" />
         </Box>
       </MainCard>
     </>
   );
 }
 
-ConversationEmotionCard.propTypes = { emotions: PropTypes.object };
+ConversationEmotionCard.propTypes = { data: PropTypes.object };
