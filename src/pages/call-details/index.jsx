@@ -22,48 +22,70 @@ export default function CallDetails() {
   const { id } = useParams();
 
   const [details, setDetails] = useState({ emotions: [1, 2] });
+  const [positiveText, setPositiveText] = useState(0);
+  const [positiveSpeech, setPositiveSpeech] = useState(0);
+
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const details = await getDetails(id);
-        setDetails(details.data);
+        const response = await getDetails(id);
+        setDetails(response.data);
+
+        const conclusion = details?.segmentAnalysisDetailObject?.conclusion; // Sai trong database, trường đúng là segmentAnalysisObject
+        setPositiveText(conclusion['Tích cực'] + conclusion['Bình thường']);
+
+        setPositiveSpeech(details?.reviewPercentageSpeechObject?.overview_percentage?.positive_percentage);
       } catch (error) {
         console.error('Error fetching details:', error);
       }
     };
 
     fetchDetails();
-  }, []);
+  }, [details]);
 
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}
       <Grid item xs={12} sx={{ mb: -2.25 }}>
-        <Typography variant="h5">Dashboard</Typography>
+        <Typography variant="h5">Tổng quan Cuộc gọi</Typography>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Khách hàng" count="Nguyễn Văn Hà" percentage={59.3} extra="35,000" />
+        <AnalyticEcommerce title="Nhân viên" count={details?.fullNameEmployee}  extra="35,000" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Thời gian cuộc gọi" count="10m20s" percentage={70.5} extra="8,900" />
+        <AnalyticEcommerce title="Thời gian cuộc gọi" count={details?.durationFile} percentage={70.5} extra="8,900" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Điểm số giọng nói" count="73%" percentage={27.4} isLoss color="warning" extra="1,943" />
+        <AnalyticEcommerce
+          title="Điểm số giọng nói"
+          count={positiveSpeech + '/100'}
+          percentage={27.4}
+          isLoss
+          color="warning"
+          extra="1,943"
+        />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Điểm số nội dung" count="57%" percentage={27.4} isLoss color="warning" extra="$20,395" />
+        <AnalyticEcommerce
+          title="Điểm số nội dung"
+          count={positiveText + '/100'}
+          percentage={27.4}
+          isLoss
+          color="warning"
+          extra="$20,395"
+        />
       </Grid>
 
       <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
       {/* row 2 */}
       <Grid item xs={12} md={7} lg={8}>
-        <ConversationEmotionCard emotions={details.emotions} />
+        <ConversationEmotionCard data={details} />
       </Grid>
       <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Typography variant="h5">Sentiment Segmentation</Typography>
+            <Typography variant="h5">Thành phần cảm xúc</Typography>
           </Grid>
           <Grid item />
         </Grid>
@@ -76,8 +98,7 @@ export default function CallDetails() {
               <Typography variant="h3">$7,650</Typography>
             </Stack>
           </Box> */}
-          <EmotionDonutChart />
-          <EmotionDonutChart isPie={true} />
+          <EmotionDonutChart data={details?.reviewSpeechObject?.emotion_percentages} />
         </MainCard>
       </Grid>
 
@@ -88,9 +109,9 @@ export default function CallDetails() {
           </Grid>
           <Grid item />
         </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
+        {/* <MainCard sx={{ mt: 2 }} content={false}>
           <CallAnalizeTable details={details} />
-        </MainCard>
+        </MainCard> */}
       </Grid>
     </Grid>
   );

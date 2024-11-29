@@ -12,7 +12,7 @@ import { range } from 'lodash';
 // chart options
 const areaChartOptions = {
   chart: {
-    height: 450,
+    height: 325,
     type: 'area',
     toolbar: {
       show: false
@@ -32,7 +32,7 @@ const areaChartOptions = {
 
 // ==============================|| INCOME AREA CHART ||============================== //
 
-export default function EmotionAreaChart({ slot, data }) {
+export default function EmotionAreaChart({ slot, data1, title1, data2, title2 }) {
   const theme = useTheme();
 
   const { primary, secondary } = theme.palette.text;
@@ -45,17 +45,18 @@ export default function EmotionAreaChart({ slot, data }) {
       ...prevState,
       colors: [theme.palette.primary.main, theme.palette.primary[700]],
       xaxis: {
-      categories: slot === 'month' ? range(1, 12) : ['Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy', 'CN'],
-      labels: {
-        style: {
-        colors: Array(slot === 'month' ? 11 : 7).fill(secondary)
-        }
-      },
-      axisBorder: {
-        show: true,
-        color: line
-      },
-      tickAmount: slot === 'month' ? 11 : 7
+        categories: range(1, data1?.length, 1), // start, end, step
+        labels: {
+          style: {
+            colors: Array(data1?.length).fill(secondary)
+          }
+        },
+        axisBorder: {
+          show: true,
+          color: line
+        },
+        // tickAmount: slot === 'month' ? 11 : 7
+        tickAmount: data1?.length
       },
       yaxis: {
       labels: {
@@ -68,33 +69,32 @@ export default function EmotionAreaChart({ slot, data }) {
       borderColor: line
       }
     }));
-  }, [primary, secondary, line, theme, slot, data]);
+  }, [theme, slot, data1, data2]);
 
-  const [series, setSeries] = useState([
-    {
-      name: 'Sale',
-      data: [0, 86, 28, 115, 48, 210, 136]
-    },
-    {
-      name: 'Hỗ trợ',
-      data: [0, 43, 14, 56, 24, 105, 68]
-    }
-  ]);
+  const [series, setSeries] = useState([]);
 
   useEffect(() => {
     setSeries([
       {
-        name: 'Sale',
-        data: slot === 'month' ? [76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 115, 35] : [31, 40, 28, 51, 42, 109, 100]
+        name: title1,
+        // data: slot === 'month' ? [76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 115, 35] : [31, 40, 28, 51, 42, 109, 100]
+        data: data1
       },
       {
-        name: 'Hỗ trợ',
-        data: slot === 'month' ? [110, 60, 150, 35, 60, 36, 26, 45, 65, 52, 53, 41] : [11, 32, 45, 32, 34, 52, 41]
+        name: title2,
+        // data: slot === 'month' ? [110, 60, 150, 35, 60, 36, 26, 45, 65, 52, 53, 41] : [11, 32, 45, 32, 34, 52, 41]
+        data: data2
       }
     ]);
-  }, [slot]);
+  }, [slot, data1, data2]);
 
-  return <ReactApexChart options={options} series={series} type="area" height={450} />;
+  return <ReactApexChart options={options} series={series} type="area" height={325} />;
 }
 
-EmotionAreaChart.propTypes = { slot: PropTypes.string, data: PropTypes.array };
+EmotionAreaChart.propTypes = {
+  slot: PropTypes.string,
+  data1: PropTypes.array,
+  title1: PropTypes.string,
+  data2: PropTypes.array,
+  title2: PropTypes.string
+};

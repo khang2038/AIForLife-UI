@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import Button from '@mui/material/Button';
@@ -14,43 +14,55 @@ import EmotionAreaChart from '../../chart/EmotionAreaChart';
 
 // ==============================|| DEFAULT - UNIQUE VISITOR ||============================== //
 
-export default function ConversationEmotionCard({ emotions }) {
-  const [slot, setSlot] = useState('month');
+export default function ConversationEmotionCard({ data }) {
+  const [slot, setSlot] = useState('sentence');
+  const [textScores, setTextScores] = useState([]);
+  const [speechScores, setSpeechScores] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      const textData = data?.segmentAnalysisObject?.detail || []; // Sai trong database, trường đúng là segmentAnalysisDetailObject
+      const speechData = data?.reviewSpeechDetailObject?.predictions_details || [];
+
+      setTextScores(textData.map((item) => ((item?.percentPositive || 0) + (item?.percentNormal || 0)).toFixed(2)));
+      setSpeechScores(speechData.map((item) => item?.probabilityPositive.toFixed(2) || 0));
+    }
+  }, [data]);
 
   return (
     <>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">Thống kê cuộc gọi theo mục tiêu</Typography>
+          <Typography variant="h5">Phân tích cảm xúc tích cực theo thời gian</Typography>
         </Grid>
         <Grid item>
           <Stack direction="row" alignItems="center" spacing={0}>
             <Button
               size="small"
-              onClick={() => setSlot('week')}
-              color={slot === 'week' ? 'primary' : 'secondary'}
-              variant={slot === 'week' ? 'outlined' : 'text'}
+              onClick={() => setSlot('paragraph')}
+              color={slot === 'paragraph' ? 'primary' : 'secondary'}
+              variant={slot === 'paragraph' ? 'outlined' : 'text'}
             >
-              Tuần Này
+              Theo đoạn
             </Button>
             <Button
               size="small"
-              onClick={() => setSlot('month')}
-              color={slot === 'month' ? 'primary' : 'secondary'}
-              variant={slot === 'month' ? 'outlined' : 'text'}
+              onClick={() => setSlot('sentence')}
+              color={slot === 'sentence' ? 'primary' : 'secondary'}
+              variant={slot === 'sentence' ? 'outlined' : 'text'}
             >
-              Tháng này
+              Theo câu
             </Button>
           </Stack>
         </Grid>
       </Grid>
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Box sx={{ pt: 1, pr: 2 }}>
-          <EmotionAreaChart slot={slot} data={emotions} />
+          <EmotionAreaChart slot={slot} data1={textScores} title1="Nội dung" data2={speechScores} title2="Giọng nói" />
         </Box>
       </MainCard>
     </>
   );
 }
 
-ConversationEmotionCard.propTypes = { emotions: PropTypes.object };
+ConversationEmotionCard.propTypes = { data: PropTypes.object };
