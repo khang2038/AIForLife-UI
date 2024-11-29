@@ -45,39 +45,38 @@ export default function EmotionAreaChart({ slot, data }) {
       ...prevState,
       colors: [theme.palette.primary.main, theme.palette.primary[700]],
       xaxis: {
-        categories: range(1, data?.length, 1), // start, end, step
-        labels: {
-          style: {
-            colors: Array(data?.length).fill(secondary)
-          }
-        },
-        axisBorder: {
-          show: true,
-          color: line
-        },
-        // tickAmount: slot === 'month' ? 11 : 7
-        tickAmount: data?.length
-      },
-      yaxis: {
-        labels: {
-          style: {
-            colors: [secondary]
-          }
+      categories: slot === 'month' ? range(1, 12) : ['Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy', 'CN'],
+      labels: {
+        style: {
+        colors: Array(slot === 'month' ? 11 : 7).fill(secondary)
         }
       },
+      axisBorder: {
+        show: true,
+        color: line
+      },
+      tickAmount: slot === 'month' ? 11 : 7
+      },
+      yaxis: {
+      labels: {
+        style: {
+        colors: [secondary]
+        }
+      }
+      },
       grid: {
-        borderColor: line
+      borderColor: line
       }
     }));
   }, [primary, secondary, line, theme, slot, data]);
 
   const [series, setSeries] = useState([
     {
-      name: 'Page Views',
+      name: 'Sale',
       data: [0, 86, 28, 115, 48, 210, 136]
     },
     {
-      name: 'Sessions',
+      name: 'Hỗ trợ',
       data: [0, 43, 14, 56, 24, 105, 68]
     }
   ]);
@@ -85,11 +84,11 @@ export default function EmotionAreaChart({ slot, data }) {
   useEffect(() => {
     setSeries([
       {
-        name: 'Speech',
+        name: 'Sale',
         data: slot === 'month' ? [76, 85, 101, 98, 87, 105, 91, 114, 94, 86, 115, 35] : [31, 40, 28, 51, 42, 109, 100]
       },
       {
-        name: 'Content',
+        name: 'Hỗ trợ',
         data: slot === 'month' ? [110, 60, 150, 35, 60, 36, 26, 45, 65, 52, 53, 41] : [11, 32, 45, 32, 34, 52, 41]
       }
     ]);

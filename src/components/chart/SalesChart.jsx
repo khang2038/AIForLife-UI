@@ -41,11 +41,11 @@ const columnChartOptions = {
     colors: ['transparent']
   },
   xaxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+    categories: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11'],
   },
   yaxis: {
     title: {
-      text: '$ (thousands)'
+      text: 'tr'
     }
   },
   fill: {
@@ -54,7 +54,7 @@ const columnChartOptions = {
   tooltip: {
     y: {
       formatter(val) {
-        return `$ ${val} thousands`;
+        return `${val}tr`;
       }
     }
   },
@@ -75,12 +75,12 @@ const columnChartOptions = {
 
 const initialSeries = [
   {
-    name: 'Income',
-    data: [180, 90, 135, 114, 120, 145]
+    name: 'Doanh thu thực tế',
+    data: [180, 90, 135, 114, 120, 145, 170, 120, 145, 170, 120]
   },
   {
-    name: 'Cost Of Sales',
-    data: [120, 45, 78, 150, 168, 99]
+    name: 'Doanh thu mong muốn',
+    data: [200, 95, 140, 150, 168, 150, 200, 150, 170, 200, 168]
   }
 ];
 
@@ -118,15 +118,15 @@ export default function SalesChart() {
     } else if (income) {
       setSeries([
         {
-          name: 'Income',
-          data: [180, 90, 135, 114, 120, 145]
+          name: 'Doanh thu thực tế',
+          data: [180, 90, 135, 114, 120, 145, 170, 120, 145, 170, 120]
         }
       ]);
     } else if (cos) {
       setSeries([
         {
-          name: 'Cost Of Sales',
-          data: [120, 45, 78, 150, 168, 99]
+          name: 'Doanh thu mong muốn',
+          data: [200, 95, 140, 150, 168, 150, 200, 150, 170, 200, 168]
         }
       ]);
     } else {
@@ -169,17 +169,17 @@ export default function SalesChart() {
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack spacing={1.5}>
             <Typography variant="h6" color="secondary">
-              Net Profit
+              Doanh thu 
             </Typography>
-            <Typography variant="h4">$1560</Typography>
+            <Typography variant="h4">700.000.000VNĐ</Typography>
           </Stack>
           <FormControl component="fieldset">
             <FormGroup row>
               <FormControlLabel
                 control={<Checkbox color="warning" checked={income} onChange={handleLegendChange} name="income" />}
-                label="Income"
+                label="Doanh thu  thực tế"
               />
-              <FormControlLabel control={<Checkbox checked={cos} onChange={handleLegendChange} name="cos" />} label="Cost of Sales" />
+              <FormControlLabel control={<Checkbox checked={cos} onChange={handleLegendChange} name="cos" />} label="Doanh thu  mong muốn" />
             </FormGroup>
           </FormControl>
         </Stack>

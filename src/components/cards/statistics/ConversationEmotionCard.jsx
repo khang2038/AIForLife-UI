@@ -15,31 +15,31 @@ import EmotionAreaChart from '../../chart/EmotionAreaChart';
 // ==============================|| DEFAULT - UNIQUE VISITOR ||============================== //
 
 export default function ConversationEmotionCard({ emotions }) {
-  const [slot, setSlot] = useState('sentence');
+  const [slot, setSlot] = useState('month');
 
   return (
     <>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">Conversation Emotion Timeline</Typography>
+          <Typography variant="h5">Thống kê cuộc gọi theo mục tiêu</Typography>
         </Grid>
         <Grid item>
           <Stack direction="row" alignItems="center" spacing={0}>
             <Button
               size="small"
-              onClick={() => setSlot('paragraph')}
-              color={slot === 'paragraph' ? 'primary' : 'secondary'}
-              variant={slot === 'paragraph' ? 'outlined' : 'text'}
+              onClick={() => setSlot('week')}
+              color={slot === 'week' ? 'primary' : 'secondary'}
+              variant={slot === 'week' ? 'outlined' : 'text'}
             >
-              Paragraph
+              Tuần Này
             </Button>
             <Button
               size="small"
-              onClick={() => setSlot('sentence')}
-              color={slot === 'sentence' ? 'primary' : 'secondary'}
-              variant={slot === 'sentence' ? 'outlined' : 'text'}
+              onClick={() => setSlot('month')}
+              color={slot === 'month' ? 'primary' : 'secondary'}
+              variant={slot === 'month' ? 'outlined' : 'text'}
             >
-              Sentence
+              Tháng này
             </Button>
           </Stack>
         </Grid>
