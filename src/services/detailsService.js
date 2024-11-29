@@ -8,4 +8,13 @@ export const getDetails = async (id) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const getAllDetails = async () => {
+  try {
+    const res = await apiRequest.get(`admin/review-call-detail`, {});
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
 }
