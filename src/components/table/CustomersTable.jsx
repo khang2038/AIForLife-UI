@@ -23,10 +23,14 @@ import {
 } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import CallEndIcon from '@mui/icons-material/CallEnd';
+import ringtoneFile from 'assets/audio/original-phone-ringtone-36558.mp3';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // project import
 import Dot from 'components/@extended/Dot';
 import { getCustomers } from 'services/customersService';
+
 
 const headCells = [
   {
@@ -121,10 +125,11 @@ export default function CustomersTable() {
   const [openCalling, setOpenCalling] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [callTime, setCallTime] = useState(0);
+  const [isRinging, setIsRinging] = useState(false);
 
   useEffect(() => {
     let timer;
-    if (openCalling) {
+    if (openCalling && !isRinging) {
       timer = setInterval(() => {
         setCallTime((prev) => prev + 1);
       }, 1000);
@@ -133,7 +138,7 @@ export default function CustomersTable() {
     }
 
     return () => clearInterval(timer);
-  }, [openCalling]);
+  }, [openCalling, isRinging]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
@@ -156,11 +161,25 @@ export default function CustomersTable() {
   const handleCall = () => {
     setOpen(false);
     setOpenCalling(true);
+    setIsRinging(true);
+
+    const ringtone = new Audio(ringtoneFile);
+    ringtone.loop = true;
+    ringtone.play();
+
+    setTimeout(() => {
+      ringtone.pause();
+      setIsRinging(false);
+    }, 3000);
   };
 
   const handleEndCall = () => {
     setOpenCalling(false);
     setCallTime(0);
+
+    toast.success('Thông tin cuộc gọi đã được lưu thành công!', {
+      position: 'top-right'
+    });
   };
 
   useEffect(() => {
@@ -242,30 +261,11 @@ export default function CustomersTable() {
       </Dialog>
 
       <Dialog open={openCalling} onClose={handleEndCall} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ fontSize: '1.5rem', textAlign: 'center' }}>Đang gọi...</DialogTitle>
+        <DialogTitle sx={{ fontSize: '1.5rem', textAlign: 'center' }}>{isRinging ? 'Đang đổ chuông...' : 'Đang gọi...'}</DialogTitle>
         <DialogContent sx={{ textAlign: 'center', padding: '24px' }}>
-          {/* Avatar với hiệu ứng sóng tỏa */}
-          <Box
-            sx={{
-              position: 'relative',
-              display: 'inline-block',
-              marginBottom: 2,
-              mt: 10,
-              width: 120, // Tăng kích thước Avatar
-              height: 120
-            }}
-          >
-            <Avatar
-              src="/path-to-avatar.jpg"
-              sx={{
-                width: '100%',
-                height: '100%',
-                margin: '0 auto',
-                zIndex: 2,
-                position: 'relative'
-              }}
-            />
-            {/* Sóng tỏa quanh avatar */}
+          {/* Avatar và thông tin khách hàng */}
+          <Box sx={{ position: 'relative', display: 'inline-block', marginBottom: 2, mt: 10, width: 120, height: 120 }}>
+            <Avatar src="/path-to-avatar.jpg" sx={{ width: '100%', height: '100%', margin: '0 auto', zIndex: 2, position: 'relative' }} />
             <Box
               className="wave-effect"
               sx={{
@@ -281,16 +281,14 @@ export default function CustomersTable() {
               }}
             />
           </Box>
-
-          {/* Tên và số điện thoại */}
           <Typography variant="h6">{selectedCustomer?.fullName}</Typography>
           <Typography variant="body2" color="text.secondary">
             {selectedCustomer?.phoneNumber}
           </Typography>
 
-          {/* Thời gian gọi */}
+          {/* Hiển thị thời gian gọi hoặc trạng thái "đang đổ chuông" */}
           <Typography variant="h6" sx={{ marginTop: 2, fontWeight: 'bold' }}>
-            Thời gian: {formatTime(callTime)}
+            {isRinging ? 'Đổ chuông...' : `Thời gian: ${formatTime(callTime)}`}
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -300,31 +298,13 @@ export default function CustomersTable() {
             startIcon={<CallEndIcon />}
             variant="contained"
             fullWidth
-            sx={{ padding: '12px 0', fontSize: '1rem' }} // Tăng kích thước nút
+            sx={{ padding: '12px 0', fontSize: '1rem' }}
           >
             Kết thúc
           </Button>
         </DialogActions>
-
-        {/* CSS cho hiệu ứng sóng */}
-        <style>
-          {`
-      @keyframes wave-animation {
-        0% {
-          transform: scale(1);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(2.5);
-          opacity: 0;
-        }
-      }
-      .wave-effect {
-        animation: wave-animation 2s infinite;
-      }
-    `}
-        </style>
       </Dialog>
+      <ToastContainer />
     </Box>
   );
 }
