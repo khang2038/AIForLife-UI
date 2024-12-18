@@ -9,12 +9,15 @@ import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
 import EmotionDonutChart from 'components/chart/EmotionDonutChart';
 import ConversationEmotionCard from 'components/cards/statistics/ConversationEmotionCard';
 import CallAnalizeTable from 'components/table/CallAnalizeTable';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { IconButton } from '@mui/material';
 
 // assets
 import { getDetails } from 'services/detailsService';
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
@@ -22,8 +25,7 @@ export default function CallDetails() {
   const { id } = useParams();
 
   const [details, setDetails] = useState({ emotions: [1, 2] });
-  const [positiveText, setPositiveText] = useState(0);
-  const [positiveSpeech, setPositiveSpeech] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -31,11 +33,6 @@ export default function CallDetails() {
         const response = await getDetails(id);
         const fetchedDetails = response.data;
         setDetails(fetchedDetails);
-
-        const conclusion = fetchedDetails?.segmentAnalysisObject?.conclusion; // Sửa đúng trường
-        setPositiveText(conclusion['Tích cực'] + conclusion['Bình thường']);
-
-        setPositiveSpeech(fetchedDetails?.reviewPercentageSpeechObject?.overview_percentage?.positive_percentage);
       } catch (error) {
         console.error('Error fetching details:', error);
       }
@@ -46,11 +43,14 @@ export default function CallDetails() {
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}
-      <Grid item xs={12} sx={{ mb: -2.25 }}>
+      <Grid item xs={12} sx={{ mb: -2.25, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <IconButton color="secondary" onClick={() => navigate('/dashboard/default')} sx={{ p: 0 }}>
+          <ArrowBackIcon />
+        </IconButton>
         <Typography variant="h5">Tổng quan Cuộc gọi</Typography>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Nhân viên" count={details?.fullNameEmployee}  extra="35,000" />
+        <AnalyticEcommerce title="Nhân viên" count={details?.fullNameEmployee} extra="35,000" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce title="Thời gian cuộc gọi" count={details?.durationFile} percentage={70.5} extra="8,900" />
@@ -58,7 +58,7 @@ export default function CallDetails() {
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce
           title="Điểm số giọng nói"
-          count={positiveSpeech + '/100'}
+          count={details.reviewPercentageSpeechObject?.overview_percentage?.positive_percentage + '/100'}
           percentage={27.4}
           isLoss
           color="warning"
@@ -68,7 +68,11 @@ export default function CallDetails() {
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce
           title="Điểm số nội dung"
-          count={positiveText + '/100'}
+          count={
+            details.segmentAnalysisDetailObject?.conclusion['Tích cực'] +
+            details.segmentAnalysisDetailObject?.conclusion['Bình thường'] +
+            '/100'
+          }
           percentage={27.4}
           isLoss
           color="warning"
@@ -90,14 +94,6 @@ export default function CallDetails() {
           <Grid item />
         </Grid>
         <MainCard sx={{ mt: 2 }} content={false}>
-          {/* <Box sx={{ p: 3, pb: 1 }}>
-            <Stack spacing={2}>
-              <Typography variant="h6" color="text.secondary">
-                This Week Statistics
-              </Typography>
-              <Typography variant="h3">$7,650</Typography>
-            </Stack>
-          </Box> */}
           <EmotionDonutChart data={details?.reviewSpeechObject?.emotion_percentages} />
         </MainCard>
       </Grid>

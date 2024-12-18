@@ -10,12 +10,13 @@ import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box';
 import React from 'react';
 import { getAllDetails } from 'services/detailsService';
+import { useNavigate } from 'react-router-dom';
 
 function createData(callHistoryId, fullNameEmployee, task, duration) {
   return { callHistoryId, fullNameEmployee, task, duration };
 }
 
-function descendingComparator(a, b, orderBy) { 
+function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -28,6 +29,7 @@ function descendingComparator(a, b, orderBy) {
 function getComparator(order, orderBy) {
   return order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
 }
+
 
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
@@ -100,6 +102,7 @@ function OrderTableHead({ order, orderBy }) {
 export default function OrderTable() {
   const order = 'asc';
   const orderBy = 'callHistoryId';
+  const navigate = useNavigate();
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
     const fetchData = async () => {
@@ -107,7 +110,7 @@ export default function OrderTable() {
       const newData = response.data.map((item) => {
         const row = createData(item.callHistoryId, item.fullNameEmployee, item.typeTask, item.durationFile);
         return row;
-      })
+      });
       setData(newData);
     };
     fetchData();
@@ -128,30 +131,36 @@ export default function OrderTable() {
         <Table aria-labelledby="tableTitle">
           <OrderTableHead order={order} orderBy={orderBy} />
           <TableBody>
-              {stableSort(data, getComparator(order, orderBy)).map((row, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
+            {stableSort(data, getComparator(order, orderBy)).map((row, index) => {
+              const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    tabIndex={-1}
-                    key={row.callHistoryId}
-                  >
-                    <TableCell component="th" id={labelId} scope="row">
-                      <Link color="secondary"> {row.callHistoryId}</Link>
-                    </TableCell>
-                    <TableCell align='left'>{row.fullNameEmployee}</TableCell>
-                    <TableCell align="left">{row.task}</TableCell>
-                    <TableCell align="left">{row.duration}s</TableCell>
-                    <TableCell align="right">
-                      <Link href={"/free/call-details/" + row.callHistoryId} color="secondary">Xem chi tiết</Link>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody> 
+              return (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  tabIndex={-1}
+                  key={row.callHistoryId}
+                >
+                  <TableCell component="th" id={labelId} scope="row">
+                    <Link color="secondary"> {row.callHistoryId}</Link>
+                  </TableCell>
+                  <TableCell align="left">{row.fullNameEmployee}</TableCell>
+                  <TableCell align="left">{row.task}</TableCell>
+                  <TableCell align="left">{row.duration}s</TableCell>
+                  <TableCell align="right">
+                    <Link
+                      color="secondary"
+                      onClick={() => navigate('/call-details/' + row.callHistoryId)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Xem chi tiết
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
         </Table>
       </TableContainer>
     </Box>

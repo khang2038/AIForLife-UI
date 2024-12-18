@@ -45,7 +45,7 @@ const columnChartOptions = {
   },
   yaxis: {
     title: {
-      text: 'tr'
+      text: ''
     }
   },
   fill: {
@@ -54,7 +54,7 @@ const columnChartOptions = {
   tooltip: {
     y: {
       formatter(val) {
-        return `${val}tr`;
+        return `${val}`;
       }
     }
   },
@@ -75,11 +75,11 @@ const columnChartOptions = {
 
 const initialSeries = [
   {
-    name: 'Doanh thu thực tế',
+    name: 'Số Lượng Cuộc Gọi Tích Cực',
     data: [180, 90, 135, 114, 120, 145, 170, 120, 145, 170, 120]
   },
   {
-    name: 'Doanh thu mong muốn',
+    name: 'Số Lượng Cuộc Gọi Tiêu Cực',
     data: [200, 95, 140, 150, 168, 150, 200, 150, 170, 200, 168]
   }
 ];
@@ -118,14 +118,14 @@ export default function SalesChart() {
     } else if (income) {
       setSeries([
         {
-          name: 'Doanh thu thực tế',
+          name: 'Số Lượng Cuộc Gọi Tích Cực',
           data: [180, 90, 135, 114, 120, 145, 170, 120, 145, 170, 120]
         }
       ]);
     } else if (cos) {
       setSeries([
         {
-          name: 'Doanh thu mong muốn',
+          name: 'Số Lượng Cuộc Gọi Tiêu Cực',
           data: [200, 95, 140, 150, 168, 150, 200, 150, 170, 200, 168]
         }
       ]);
@@ -169,17 +169,17 @@ export default function SalesChart() {
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack spacing={1.5}>
             <Typography variant="h6" color="secondary">
-              Doanh thu 
+              Số Lượng Cuộc Gọi
             </Typography>
-            <Typography variant="h4">700.000.000VNĐ</Typography>
+            <Typography variant="h4">5,204,860</Typography>
           </Stack>
           <FormControl component="fieldset">
             <FormGroup row>
               <FormControlLabel
                 control={<Checkbox color="warning" checked={income} onChange={handleLegendChange} name="income" />}
-                label="Doanh thu  thực tế"
+                label="Số Lượng Cuộc Gọi Tích Cực"
               />
-              <FormControlLabel control={<Checkbox checked={cos} onChange={handleLegendChange} name="cos" />} label="Doanh thu  mong muốn" />
+              <FormControlLabel control={<Checkbox checked={cos} onChange={handleLegendChange} name="cos" />} label="Số Lượng Cuộc Gọi Tiêu Cực" />
             </FormGroup>
           </FormControl>
         </Stack>

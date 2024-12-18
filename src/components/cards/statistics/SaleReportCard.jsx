@@ -30,7 +30,7 @@ export default function SaleReportCard() {
     <>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">Báo cáo doanh thu</Typography>
+          <Typography variant="h5">Tổng quan kết quả cuộc gọi</Typography>
         </Grid>
         <Grid item>
           <TextField

@@ -40,11 +40,11 @@ export default function DashboardDefault() {
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce
           title="Số lượng cuộc gọi chưa phân tích"
-          count="$35,078"
+          count="35,078"
           percentage={27.4}
           isLoss
           color="warning"
-          extra="$20,395"
+          extra="20,395"
         />
       </Grid>
 
