@@ -28,6 +28,7 @@ import chunk_4_Hung from 'assets/audio/chunk_4_Hung.wav';
 import chunk_4_Khang from 'assets/audio/chunk_4_Khang.wav';
 import chunk_4_Phong from 'assets/audio/chunk_4_Phong.wav';
 import chunk_4_Vinh from 'assets/audio/chunk_4_Vinh.wav';
+import { Chip } from '@mui/material';
 
 // project import
 import Dot from 'components/@extended/Dot';
@@ -138,6 +139,11 @@ export default function CallAnalizeTable({ details }) {
             {details?.reviewSpeechDetailObject?.predictions_details?.map((row, index) => {
               const labelId = `enhanced-table-checkbox-${index}`;
 
+              const isPositiveAudioEmotion = row.emotion === 'Thân Thiện' || row.emotion === 'Vui Vẻ';
+              const isNegativeAudioEmotion = row.emotion === 'Mệt Mỏi' || row.emotion === 'Cáu Giận';
+              const isNegativeTextSentiment = details?.segmentAnalysisObject?.detail?.[index]?.sentiment === 'Tiêu cực';
+              const isPositiveTextSentiment = details?.segmentAnalysisObject?.detail?.[index]?.sentiment === 'Tích cực';
+
               return (
                 <TableRow
                   hover
@@ -151,8 +157,24 @@ export default function CallAnalizeTable({ details }) {
                   </TableCell>
                   <TableCell align="right">{details?.segmentAnalysisObject?.detail?.[index]?.text}</TableCell>
                   <TableCell>{row.file}</TableCell>
-                  <TableCell align="right">{row.emotion}</TableCell>
-                  <TableCell align="right">{details?.segmentAnalysisObject?.detail?.[index]?.sentiment}</TableCell>
+                  <TableCell align="right">
+                    <Chip
+                      label={row.emotion}
+                      sx={{
+                        backgroundColor: isNegativeAudioEmotion ? '#FF8080' : isPositiveAudioEmotion ? '#80FF80' : '#80C7FF',
+                        color: '#000'
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    <Chip
+                      label={details?.segmentAnalysisObject?.detail?.[index]?.sentiment}
+                      sx={{
+                        backgroundColor: isNegativeTextSentiment ? '#FF8080' : isPositiveTextSentiment ? '#80FF80' : '#80C7FF',
+                        color: '#000'
+                      }}
+                    />
+                  </TableCell>
                   <TableCell align="right">
                     <IconButton
                       color="success"

@@ -21,8 +21,8 @@ export default function ConversationEmotionCard({ data }) {
 
   useEffect(() => {
     if (data) {
-      const textData = data?.segmentAnalysisObject?.detail || []; // Sai trong database, trường đúng là segmentAnalysisDetailObject
-      const speechData = data?.reviewSpeechDetailObject?.predictions_details || [];
+      const textData = data?.segmentAnalysisObject?.detail || [];
+      const speechData = data?.reviewSpeechDetailObject?.predictions_details || []
 
       setTextScores(textData.map((item) => ((item?.percentPositive || 0) + (item?.percentNormal || 0)).toFixed(2)));
       setSpeechScores(speechData.map((item) => item?.probabilityPositive.toFixed(2) || 0));

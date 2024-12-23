@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
 // third-party
@@ -10,7 +7,6 @@ import ReactApexChart from 'react-apexcharts';
 // ==============================|| MONTHLY BAR CHART ||============================== //
 
 export default function EmotionDonutChart(data, isPie = false, sx) {
-  const theme = useTheme();
 
   const [series, setSeries] = useState([]);
   const [labels, setLabels] = useState([]);
@@ -24,6 +20,12 @@ export default function EmotionDonutChart(data, isPie = false, sx) {
 
   const options = {
     labels: labels,
+    colors: labels.map((label) => {
+      if (label === 'Mệt Mỏi' || label === 'Cáu Giận') return '#FF6666';
+      if (label === 'Vui Vẻ') return '#FFD700';
+      if (label === 'Thân Thiện') return '#32CD32';
+      return '#00FFFF';
+    }),
     plotOptions: {
       pie: {
         size: 180

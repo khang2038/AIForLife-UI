@@ -99,7 +99,7 @@ export default function SalesChart() {
   const { primary, secondary } = theme.palette.text;
   const line = theme.palette.divider;
 
-  const warning = theme.palette.warning.main;
+  const error = theme.palette.error.main;
   const primaryMain = theme.palette.primary.main;
   const successDark = theme.palette.success.dark;
 
@@ -137,7 +137,7 @@ export default function SalesChart() {
   useEffect(() => {
     setOptions((prevState) => ({
       ...prevState,
-      colors: !(income && cos) && cos ? [primaryMain] : [warning, primaryMain],
+      colors: !(income && cos) && cos ? [primaryMain] : [error, primaryMain],
       xaxis: {
         labels: {
           style: {
@@ -161,7 +161,7 @@ export default function SalesChart() {
         }
       }
     }));
-  }, [primary, secondary, line, warning, primaryMain, successDark, income, cos, xsDown]);
+  }, [primary, secondary, line, primaryMain, successDark, income, cos, xsDown]);
 
   return (
     <MainCard sx={{ mt: 1 }} content={false}>
@@ -176,7 +176,7 @@ export default function SalesChart() {
           <FormControl component="fieldset">
             <FormGroup row>
               <FormControlLabel
-                control={<Checkbox color="warning" checked={income} onChange={handleLegendChange} name="income" />}
+                control={<Checkbox color="error" checked={income} onChange={handleLegendChange} name="income" />}
                 label="Số Lượng Cuộc Gọi Tích Cực"
               />
               <FormControlLabel control={<Checkbox checked={cos} onChange={handleLegendChange} name="cos" />} label="Số Lượng Cuộc Gọi Tiêu Cực" />
