@@ -9,6 +9,7 @@ const Color = Loadable(lazy(() => import('pages/component-overview/color')));
 const Typography = Loadable(lazy(() => import('pages/component-overview/typography')));
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 const CallDetails = Loadable(lazy(() => import('pages/call-details/index')));
+const ImportFile = Loadable(lazy(() => import('pages/import-file/index')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
@@ -52,6 +53,10 @@ const MainRoutes = {
       // path: 'call-details/:id',
       path: 'call-details/:id',
       element: <CallDetails />
+    },
+    {
+      path: 'import-file/',
+      element: <ImportFile />
     }
   ]
 };
