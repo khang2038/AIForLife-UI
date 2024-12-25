@@ -26,6 +26,7 @@ import CallEndIcon from '@mui/icons-material/CallEnd';
 import ringtoneFile from 'assets/audio/original-phone-ringtone-36558.mp3';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import TablePagination from '@mui/material/TablePagination';
 
 // project import
 import Dot from 'components/@extended/Dot';
@@ -126,6 +127,19 @@ export default function CustomersTable() {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [callTime, setCallTime] = useState(0);
   const [isRinging, setIsRinging] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const paginatedCustomers = customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   useEffect(() => {
     let timer;
@@ -210,9 +224,8 @@ export default function CustomersTable() {
         <Table aria-labelledby="tableTitle">
           <OrderTableHead />
           <TableBody>
-            {customers?.map((row, index) => {
+            {paginatedCustomers.map((row, index) => {
               const labelId = `enhanced-table-checkbox-${index}`;
-
               return (
                 <TableRow
                   hover
@@ -222,7 +235,7 @@ export default function CustomersTable() {
                   key={row.callHistoryId}
                 >
                   <TableCell component="th" id={labelId} scope="row">
-                    <Link color="secondary"> {row.callHistoryId}</Link>
+                    <Link color="secondary">{row.callHistoryId}</Link>
                   </TableCell>
                   <TableCell>{row.fullName}</TableCell>
                   <TableCell align="right">{row.phoneNumber}</TableCell>
@@ -241,6 +254,15 @@ export default function CustomersTable() {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={customers.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
 
       {/* Modal */}
       <Dialog open={open} onClose={handleClose}>

@@ -238,6 +238,7 @@ export default function CallAnalizeTable({ details }) {
                         }
 
                         const ringtone = new Audio(audioFile);
+                        ringtone.volume = 1;
                         ringtone.play();
                       }}
                     >

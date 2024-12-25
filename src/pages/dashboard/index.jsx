@@ -1,22 +1,58 @@
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 
 // project import
 import MainCard from 'components/MainCard';
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
-import MonthlyBarChart from 'components/chart/MonthlyBarChart';
-import ConversationEmotionCard from 'components/cards/statistics/ConversationEmotionCard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import SaleReportCard from 'components/cards/statistics/SaleReportCard';
 import OrdersTable from 'components/table/OrdersTable';
 import CustomersTable from 'components/table/CustomersTable';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 export default function DashboardDefault() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      toast.error(
+        <div>
+          <Typography variant="body1">Có cuộc gọi tiêu cực đang xuất hiện!</Typography>
+          <button
+            onClick={() => navigate('/call-details/a9805456-113e-48bc-865d-cd057d28f986')}
+            style={{
+              marginTop: '8px',
+              padding: '8px 16px',
+              backgroundColor: '#f28b82',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Xem chi tiết
+          </button>
+        </div>,
+        {
+          position: 'top-right',
+          autoClose: 3000,
+          closeOnClick: false,
+          draggable: false,
+        }
+      );
+    }, 15000);
+
+    return () => clearInterval(intervalId);
+  }, [navigate]);
+
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+      <ToastContainer />
       {/* row 1 */}
       <Grid item xs={12} sx={{ mb: -2.25 }}>
         <Typography variant="h5">Tổng quan</Typography>
@@ -89,7 +125,7 @@ export default function DashboardDefault() {
         </MainCard>
       </Grid> */}
       {/* row 3 */}
-      <Grid item xs={12} >
+      <Grid item xs={12}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
             <Typography variant="h5">Các cuộc gọi đã hoàn thành</Typography>
