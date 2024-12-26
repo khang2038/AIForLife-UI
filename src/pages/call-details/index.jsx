@@ -10,7 +10,9 @@ import EmotionDonutChart from 'components/chart/EmotionDonutChart';
 import ConversationEmotionCard from 'components/cards/statistics/ConversationEmotionCard';
 import CallAnalizeTable from 'components/table/CallAnalizeTable';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { IconButton } from '@mui/material';
+import { IconButton, Stack, Button } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // assets
 import { getDetails } from 'services/detailsService';
@@ -26,6 +28,11 @@ export default function CallDetails() {
 
   const [details, setDetails] = useState({ emotions: [1, 2] });
   const navigate = useNavigate();
+  const handleWarning = () => {
+    toast.success('Cảnh cáo đã được gửi thành công!', {
+      position: 'top-right'
+    });
+  };
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -103,12 +110,19 @@ export default function CallDetails() {
           <Grid item>
             <Typography variant="h5">Phân tích cuộc gọi</Typography>
           </Grid>
-          <Grid item />
+          <Grid item>
+            <Stack direction="row" spacing={2} sx={{ marginTop: 2 }}>
+              <Button variant="contained" color="error" onClick={handleWarning}>
+                Gửi Cảnh Cáo
+              </Button>
+            </Stack>
+          </Grid>
         </Grid>
         <MainCard sx={{ mt: 2 }} content={false}>
           <CallAnalizeTable details={details} />
         </MainCard>
       </Grid>
+      <ToastContainer />
     </Grid>
   );
 }
