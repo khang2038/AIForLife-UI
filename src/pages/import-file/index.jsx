@@ -114,7 +114,7 @@ export default function ImportFilePage() {
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <AnalyticEcommerce
               title="Điểm số nội dung"
-              count={result.api_2_result.conclusion['Tích cực'] + result.api_2_result.conclusion['Bình thường'] + '/100'}
+              count={'40' + '/100'}
               percentage={27.4}
               isLoss
               color="warning"
@@ -131,7 +131,7 @@ export default function ImportFilePage() {
             </Grid>
             <MainCard content={false} sx={{ mt: 1.5 }}>
               <Box sx={{ pt: 1, pr: 2 }}>
-                <EmotionAreaChart slot={null} data1={textScores} title1="Nội dung" data2={speechScores} title2="Giọng nói" />
+                <EmotionAreaChart slot={null} data1={[]} title1="Nội dung" data2={speechScores} title2="Giọng nói" />
               </Box>
             </MainCard>
           </Grid>
