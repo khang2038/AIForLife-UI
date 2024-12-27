@@ -133,7 +133,7 @@ export default function ImportFilePage() {
             </Grid>
             <MainCard content={false} sx={{ mt: 1.5 }}>
               <Box sx={{ pt: 1, pr: 2 }}>
-                <EmotionAreaChart slot={null} data1={[31, 40, 28, 51, 42, 109, 100]} title1="Nội dung" data2={speechScores} title2="Giọng nói" />
+                <EmotionAreaChart slot={null} data1={[60, 40, 70, 51]} title1="Nội dung" data2={speechScores} title2="Giọng nói" />
               </Box>
             </MainCard>
           </Grid>
