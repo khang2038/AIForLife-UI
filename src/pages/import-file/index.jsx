@@ -116,7 +116,7 @@ export default function ImportFilePage() {
           <Grid item xs={12} sm={6} md={4} lg={4}>
             <AnalyticEcommerce
               title="Điểm số nội dung"
-              count={'40' + '/100'}
+              count={'65' + '/100'}
               percentage={27.4}
               isLoss
               color="warning"
