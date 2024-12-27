@@ -31,12 +31,13 @@ export default function ImportFilePage() {
     setLoading(true);
     try {
       const _result = await importFile(file);
+      console.log(_result);
       setResult(_result);
-      const textData = _result?.api_2_result?.detail || [];
-      const speechData = _result?.api_1_result?.predictions_details || [];
+      const speechData = _result?.api_1_result?.predictions_details;
+      console.log(speechData);
 
-      setTextScores(textData.map((item) => ((item?.percentPositive || 0) + (item?.percentNormal || 0)).toFixed(2)));
-      setSpeechScores(speechData.map((item) => item?.probabilityPositive.toFixed(2) || 0));
+
+      setSpeechScores(speechData?.map((item) => item?.probability_positive?.toFixed(2) || 0));
     } catch (error) {
       console.error('Error importing file:', error);
     } finally {
@@ -91,27 +92,28 @@ export default function ImportFilePage() {
           </Box>
         )}
       </Grid>
-
       {/* Analysis Section */}
       {result && (
-        <Grid item xs={12}>
+        <Grid container spacing={2} mt={2} ml={3}>
+          <Grid item xs={12}>
           <Grid item xs={12} sx={{ mb: -2.25, display: 'flex', alignItems: 'center', gap: 1 }}>
             <Typography variant="h5">Tổng quan phân tích file</Typography>
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+        </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={4}>
             <AnalyticEcommerce title="Thời gian" count={result.api_1_result.original_duration} percentage={70.5} extra="8,900" />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} sm={6} md={4} lg={4}>
             <AnalyticEcommerce
               title="Điểm số giọng nói"
-              count={result.api_1_result.original_duration.positive_percentage + '/100'}
+              count={result.api_1_result?.overview_percentage?.positive_percentage + '/100'}
               percentage={27.4}
               isLoss
               color="warning"
               extra="1,943"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} sm={6} md={4} lg={4}>
             <AnalyticEcommerce
               title="Điểm số nội dung"
               count={'40' + '/100'}
@@ -131,7 +133,7 @@ export default function ImportFilePage() {
             </Grid>
             <MainCard content={false} sx={{ mt: 1.5 }}>
               <Box sx={{ pt: 1, pr: 2 }}>
-                <EmotionAreaChart slot={null} data1={[]} title1="Nội dung" data2={speechScores} title2="Giọng nói" />
+                <EmotionAreaChart slot={null} data1={[31, 40, 28, 51, 42, 109, 100]} title1="Nội dung" data2={speechScores} title2="Giọng nói" />
               </Box>
             </MainCard>
           </Grid>
