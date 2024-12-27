@@ -3,15 +3,19 @@ import { Grid, Typography, Box, Button, IconButton, Stack, CircularProgress } fr
 import { CloudUpload, FileDownload, Clear } from '@mui/icons-material';
 import { importFile } from '../../services/importFileService';
 import { Pie, Bar } from 'react-chartjs-2';
+import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
+import EmotionAreaChart from '../../components/chart/EmotionAreaChart';
+import EmotionDonutChart from 'components/chart/EmotionDonutChart';
+import MainCard from 'components/MainCard';
 import 'chart.js/auto';
-
-// ==============================|| IMPORT FILE PAGE ||============================== //
 
 export default function ImportFilePage() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState('');
-  const [result, setResult] = useState();  
+  const [result, setResult] = useState();
+  const [textScores, setTextScores] = useState([]);
+  const [speechScores, setSpeechScores] = useState([]);
+
   const handleFileUpload = (e) => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile) {
@@ -21,29 +25,28 @@ export default function ImportFilePage() {
 
   const handleImport = async () => {
     if (!file) {
-      setStatus('Chưa chọn tệp để import');
       return;
     }
 
     setLoading(true);
-    setStatus('');
-
     try {
-      console.log(file);
       const _result = await importFile(file);
       setResult(_result);
+      const textData = _result?.api_2_result?.detail || [];
+      const speechData = _result?.api_1_result?.predictions_details || [];
+
+      setTextScores(textData.map((item) => ((item?.percentPositive || 0) + (item?.percentNormal || 0)).toFixed(2)));
+      setSpeechScores(speechData.map((item) => item?.probabilityPositive.toFixed(2) || 0));
     } catch (error) {
-      setStatus('Đã xảy ra lỗi khi import tệp');
       console.error('Error importing file:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle file clear
   const handleClearFile = () => {
     setFile(null);
-    setStatus('');
+    setResult(null);
   };
 
   return (
@@ -89,110 +92,62 @@ export default function ImportFilePage() {
         )}
       </Grid>
 
-      {/* Status Message */}
-      <Grid item xs={12}>
-        {/* {status && (
-          <Box sx={{ padding: 2, backgroundColor: status.includes('thành công') ? 'success.light' : 'error.light', borderRadius: 1 }}>
-            <Typography variant="body1" color={status.includes('thành công') ? 'success.main' : 'error.main'}>
-              {status}
-            </Typography>
-          </Box>
-        )} */}
-        <AnalysisCharts importResult={result}/>
-      </Grid>
-    </Grid>
-  );
-}
+      {/* Analysis Section */}
+      {result && (
+        <Grid item xs={12}>
+          <Grid item xs={12} sx={{ mb: -2.25, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="h5">Tổng quan phân tích file</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <AnalyticEcommerce title="Thời gian" count={result.api_1_result.original_duration} percentage={70.5} extra="8,900" />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <AnalyticEcommerce
+              title="Điểm số giọng nói"
+              count={result.api_1_result.original_duration.positive_percentage + '/100'}
+              percentage={27.4}
+              isLoss
+              color="warning"
+              extra="1,943"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <AnalyticEcommerce
+              title="Điểm số nội dung"
+              count={result.api_2_result.conclusion['Tích cực'] + result.api_2_result.conclusion['Bình thường'] + '/100'}
+              percentage={27.4}
+              isLoss
+              color="warning"
+              extra="$20,395"
+            />
+          </Grid>
 
-function AnalysisCharts({ importResult }) {
-  if (!importResult) {
-    return (
-      <Typography variant="body1" color="error">
-        Chưa có dữ liệu để phân tích.
-      </Typography>
-    );
-  }
-  const { emotion_percentages, overview_percentage, predictions_details } = importResult;
-
-  // Dữ liệu cho biểu đồ tròn (Phân bổ cảm xúc)
-  const pieData = {
-    labels: Object.keys(emotion_percentages),
-    datasets: [
-      {
-        data: Object.values(emotion_percentages),
-        backgroundColor: ['#4caf50', '#ff5722', '#03a9f4'], // Tùy chỉnh màu
-        hoverBackgroundColor: ['#66bb6a', '#ff7043', '#29b6f6']
-      }
-    ]
-  };
-
-  // Dữ liệu cho biểu đồ thanh (Tổng quan cảm xúc)
-  const barData = {
-    labels: ['Tích cực', 'Tiêu cực'],
-    datasets: [
-      {
-        label: 'Tỷ lệ (%)',
-        data: [overview_percentage.positive_percentage, overview_percentage.negative_percentage],
-        backgroundColor: ['#4caf50', '#f44336'], // Tích cực: xanh lá, Tiêu cực: đỏ
-        borderWidth: 1
-      }
-    ]
-  };
-
-  return (
-    <Grid container spacing={4}>
-      {/* Tiêu đề */}
-      <Grid item xs={12}>
-        <Typography variant="h5" gutterBottom>
-          Phân Tích Kết Quả Import
-        </Typography>
-      </Grid>
-
-      {/* Biểu đồ tròn */}
-      <Grid item xs={12} md={6}>
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6" gutterBottom>
-            Phân Bổ Cảm Xúc
-          </Typography>
-          <Pie data={pieData} />
-        </Box>
-      </Grid>
-
-      {/* Biểu đồ thanh */}
-      <Grid item xs={12} md={6}>
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6" gutterBottom>
-            Tổng Quan Cảm Xúc
-          </Typography>
-          <Bar data={barData} options={{ indexAxis: 'y' }} />
-        </Box>
-      </Grid>
-
-      {/* Chi tiết dự đoán */}
-      <Grid item xs={12}>
-        <Typography variant="h6" gutterBottom>
-          Chi Tiết Dự Đoán
-        </Typography>
-        {predictions_details.map((detail, index) => (
-          <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
-            <Typography variant="body1">
-              <strong>File:</strong> {detail.file}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Cảm Xúc:</strong> {detail.emotion}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Thời lượng:</strong> {detail.duration.toFixed(2)} giây
-            </Typography>
-            <Typography variant="body1">
-              <strong>Xác suất tích cực:</strong> {detail.probability_positive.toFixed(2)}%
-            </Typography>
-            <Typography variant="body1">
-              <strong>Xác suất tiêu cực:</strong> {detail.probability_negative.toFixed(2)}%
-            </Typography>
-          </Box>
-        ))}
-      </Grid>
+          <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
+          <Grid item xs={12} md={7} lg={8}>
+            <Grid container alignItems="center" justifyContent="space-between">
+              <Grid item>
+                <Typography variant="h5">Phân tích cảm xúc tích cực theo thời gian</Typography>
+              </Grid>
+            </Grid>
+            <MainCard content={false} sx={{ mt: 1.5 }}>
+              <Box sx={{ pt: 1, pr: 2 }}>
+                <EmotionAreaChart slot={null} data1={textScores} title1="Nội dung" data2={speechScores} title2="Giọng nói" />
+              </Box>
+            </MainCard>
+          </Grid>
+          <Grid item xs={12} md={5} lg={4}>
+            <Grid container alignItems="center" justifyContent="space-between">
+              <Grid item>
+                <Typography variant="h5">Thành phần cảm xúc theo âm thanh</Typography>
+              </Grid>
+              <Grid item />
+            </Grid>
+            <MainCard sx={{ mt: 2 }} content={false}>
+              <EmotionDonutChart data={result.api_1_result.emotion_percentages} />
+            </MainCard>
+          </Grid>
+        </Grid>
+      )}
     </Grid>
   );
 }

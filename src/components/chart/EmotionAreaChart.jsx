@@ -69,7 +69,7 @@ export default function EmotionAreaChart({ slot, data1, title1, data2, title2 })
       borderColor: line
       }
     }));
-  }, [theme, slot, data1, data2]);
+  }, [theme, data1, data2]);
 
   const [series, setSeries] = useState([]);
 
@@ -86,7 +86,7 @@ export default function EmotionAreaChart({ slot, data1, title1, data2, title2 })
         data: data2
       }
     ]);
-  }, [slot, data1, data2]);
+  }, [data1, data2]);
 
   return <ReactApexChart options={options} series={series} type="area" height={325} />;
 }
