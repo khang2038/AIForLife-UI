@@ -8,12 +8,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button'
 import React from 'react';
 import { getAllDetails } from 'services/detailsService';
 import { useNavigate } from 'react-router-dom';
 
-function createData(callHistoryId, fullNameEmployee, task, duration) {
-  return { callHistoryId, fullNameEmployee, task, duration };
+function createData(callHistoryId, fullNameEmployee, task, predictOverview, duration) {
+  return { callHistoryId, fullNameEmployee, task, predictOverview, duration };
 }
 
 function descendingComparator(a, b, orderBy) {
@@ -63,6 +64,12 @@ const headCells = [
     label: 'Mục tiêu'
   },
   {
+    id: 'predictOverview',
+    align: 'left',
+    disablePadding: true,
+    label: 'Đánh giá'
+  },
+  {
     id: 'durationFile',
     align: 'left',
     disablePadding: false,
@@ -108,7 +115,7 @@ export default function OrderTable() {
     const fetchData = async () => {
       const response = await getAllDetails();
       const newData = response.data.map((item) => {
-        const row = createData(item.callHistoryId, item.fullNameEmployee, item.typeTask, item.durationFile);
+        const row = createData(item.callHistoryId, item.fullNameEmployee, item.typeTask, item.predictOverview, item.durationFile);
         return row;
       });
       setData(newData);
@@ -147,6 +154,16 @@ export default function OrderTable() {
                   </TableCell>
                   <TableCell align="left">{row.fullNameEmployee}</TableCell>
                   <TableCell align="left">{row.task}</TableCell>
+                  <TableCell align="left">
+                    <Button
+                      variant="outlined"
+                      color={row.predictOverview === 'Tiêu cực' ? 'error' : 'success' }
+                      onClick={() => console.log('Clicked row:', row.callHistoryId)}
+                      style={{ textTransform: 'none' }}
+                    >
+                      {row.predictOverview}
+                    </Button>
+                  </TableCell>
                   <TableCell align="left">{row.duration}s</TableCell>
                   <TableCell align="right">
                     <Link

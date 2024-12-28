@@ -28,6 +28,11 @@ import chunk_4_Hung from 'assets/audio/chunk_4_Hung.wav';
 import chunk_4_Khang from 'assets/audio/chunk_4_Khang.wav';
 import chunk_4_Phong from 'assets/audio/chunk_4_Phong.wav';
 import chunk_4_Vinh from 'assets/audio/chunk_4_Vinh.wav';
+import chunks_1_Vinh from 'assets/audio/chunks_4_Vinh.wav';
+import chunks_2_Vinh from 'assets/audio/chunks_4_Vinh.wav';
+import chunks_3_Vinh from 'assets/audio/chunks_4_Vinh.wav';
+import chunks_4_Vinh from 'assets/audio/chunks_4_Vinh.wav';
+import chunks_5_Vinh from 'assets/audio/chunks_5_Vinh.wav';
 import { Chip } from '@mui/material';
 
 // project import
@@ -231,6 +236,21 @@ export default function CallAnalizeTable({ details }) {
                             break;
                           case 'chunk_4_Vinh':
                             audioFile = chunk_4_Vinh;
+                            break;
+                          case 'chunks_1_Vinh':
+                            audioFile = chunks_1_Vinh;
+                            break;
+                          case 'chunks_2_Vinh':
+                            audioFile = chunks_2_Vinh;
+                            break;
+                          case 'chunks_3_Vinh':
+                            audioFile = chunks_3_Vinh;
+                            break;
+                          case 'chunks_4_Vinh':
+                            audioFile = chunks_4_Vinh;
+                            break;
+                          case 'chunks_5_Vinh':
+                            audioFile = chunks_5_Vinh;
                             break;
                           default:
                             audioFile = chunk_1_Hung;
