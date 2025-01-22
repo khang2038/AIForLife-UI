@@ -44,31 +44,31 @@ const headCells = [
     id: 'fullName',
     align: 'left',
     disablePadding: true,
-    label: 'Tên Khách Hàng.'
+    label: 'Student Name'
   },
   {
     id: 'phoneNumber',
     align: 'right',
     disablePadding: false,
-    label: 'Số Điện Thoại'
+    label: 'Phone Number'
   },
   {
     id: 'typeStatus',
     align: 'left',
     disablePadding: false,
-    label: 'Trạng Thái'
+    label: 'Status'
   },
   {
     id: 'typeTask',
     align: 'right',
     disablePadding: false,
-    label: 'Loại Công Việc'
+    label: 'Type'
   },
   {
     id: 'action',
     align: 'right',
     disablePadding: false,
-    label: 'Thao tác'
+    label: 'Actions'
   }
 ];
 

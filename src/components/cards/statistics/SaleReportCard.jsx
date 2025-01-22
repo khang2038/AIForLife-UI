@@ -13,11 +13,11 @@ import SalesChart from '../../chart/SalesChart';
 const status = [
   {
     value: 'month',
-    label: 'Theo tháng'
+    label: 'Month'
   },
   {
     value: 'year',
-    label: 'Theo năm'
+    label: 'Year'
   }
 ];
 
@@ -30,7 +30,7 @@ export default function SaleReportCard() {
     <>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">Tổng quan kết quả cuộc gọi</Typography>
+          <Typography variant="h5">Classroom performance</Typography>
         </Grid>
         <Grid item>
           <TextField

@@ -49,37 +49,37 @@ const headCells = [
     id: 'callHistoryId',
     align: 'left',
     disablePadding: false,
-    label: 'Mã cuộc gọi'
+    label: 'ID'
   },
   {
     id: 'fullNameEmployee',
     align: 'left',
     disablePadding: true,
-    label: 'Nhân viên'
+    label: 'Teacher'
   },
   {
     id: 'typeTask',
     align: 'left',
     disablePadding: false,
-    label: 'Mục tiêu'
+    label: 'Type'
   },
   {
     id: 'predictOverview',
     align: 'left',
     disablePadding: true,
-    label: 'Đánh giá'
+    label: 'Rating'
   },
   {
     id: 'durationFile',
     align: 'left',
     disablePadding: false,
-    label: 'Thời gian cuộc gọi'
+    label: 'Time'
   },
   {
     id: 'action',
     align: 'right',
     disablePadding: false,
-    label: 'Hành động'
+    label: 'Actions'
   }
 ];
 

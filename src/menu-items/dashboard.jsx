@@ -1,10 +1,11 @@
 // assets
-import { DashboardOutlined, UploadOutlined } from '@ant-design/icons';
+import { DashboardOutlined, UploadOutlined, ProfileOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
   DashboardOutlined,
-  UploadOutlined
+  UploadOutlined,
+  ProfileOutlined
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -16,7 +17,7 @@ const dashboard = {
   children: [
     {
       id: 'dashboard',
-      title: 'Bảng điều khiển',
+      title: 'Dashboard',
       type: 'item',
       url: '/dashboard/default',
       icon: icons.DashboardOutlined,
@@ -24,10 +25,10 @@ const dashboard = {
     },
     {
       id: 'import-file',
-      title: 'Nhập File',
+      title: 'Curriculum',
       type: 'item',
       url: '/import-file',
-      icon: icons.UploadOutlined,
+      icon: icons.ProfileOutlined,
       breadcrumbs: false
     }
   ]

@@ -27,14 +27,14 @@ const utilities = {
   children: [
     {
       id: 'util-typography',
-      title: 'Kiểu chữ',
+      title: 'Teacher',
       type: 'item',
       url: '/typography',
       icon: icons.FontSizeOutlined
     },
     {
       id: 'util-color',
-      title: 'Màu sắc',
+      title: 'Style',
       type: 'item',
       url: '/color',
       icon: icons.BgColorsOutlined

@@ -41,7 +41,7 @@ const columnChartOptions = {
     colors: ['transparent']
   },
   xaxis: {
-    categories: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11'],
+    categories: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11']
   },
   yaxis: {
     title: {
@@ -75,11 +75,11 @@ const columnChartOptions = {
 
 const initialSeries = [
   {
-    name: 'Số Lượng Cuộc Gọi Tích Cực',
-    data: [180, 90, 135, 114, 120, 145, 170, 120, 145, 170, 120]
+    name: 'Students feel bored',
+    data: [18, 9, 35, 14, 42, 24, 17, 12, 35, 27, 22]
   },
   {
-    name: 'Số Lượng Cuộc Gọi Tiêu Cực',
+    name: 'Students feel interested',
     data: [200, 95, 140, 150, 168, 150, 200, 150, 170, 200, 168]
   }
 ];
@@ -118,14 +118,14 @@ export default function SalesChart() {
     } else if (income) {
       setSeries([
         {
-          name: 'Số Lượng Cuộc Gọi Tích Cực',
-          data: [180, 90, 135, 114, 120, 145, 170, 120, 145, 170, 120]
+          name: 'Students feel bored',
+          data: [18, 9, 35, 14, 42, 24, 17, 12, 35, 27, 22]
         }
       ]);
     } else if (cos) {
       setSeries([
         {
-          name: 'Số Lượng Cuộc Gọi Tiêu Cực',
+          name: 'Students feel interested',
           data: [200, 95, 140, 150, 168, 150, 200, 150, 170, 200, 168]
         }
       ]);
@@ -169,7 +169,7 @@ export default function SalesChart() {
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack spacing={1.5}>
             <Typography variant="h6" color="secondary">
-              Số Lượng Cuộc Gọi
+              Number of classes
             </Typography>
             <Typography variant="h4">5,204,860</Typography>
           </Stack>
@@ -177,9 +177,12 @@ export default function SalesChart() {
             <FormGroup row>
               <FormControlLabel
                 control={<Checkbox color="error" checked={income} onChange={handleLegendChange} name="income" />}
-                label="Số Lượng Cuộc Gọi Tích Cực"
+                label="Students feel bored"
               />
-              <FormControlLabel control={<Checkbox checked={cos} onChange={handleLegendChange} name="cos" />} label="Số Lượng Cuộc Gọi Tiêu Cực" />
+              <FormControlLabel
+                control={<Checkbox checked={cos} onChange={handleLegendChange} name="cos" />}
+                label="Students feel interested"
+              />
             </FormGroup>
           </FormControl>
         </Stack>

@@ -16,7 +16,7 @@ const support = {
   children: [
     {
       id: 'documentation',
-      title: 'Tài liệu',
+      title: 'Documentation',
       type: 'item',
       url: 'https://codedthemes.gitbook.io/mantis/',
       icon: icons.QuestionOutlined,

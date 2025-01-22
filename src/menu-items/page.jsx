@@ -1,9 +1,10 @@
 // assets
-import { LoginOutlined, ProfileOutlined } from '@ant-design/icons';
+import { LoginOutlined, UploadOutlined, ProfileOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
   LoginOutlined,
+  UploadOutlined,
   ProfileOutlined
 };
 
@@ -16,7 +17,7 @@ const pages = {
   children: [
     {
       id: 'login1',
-      title: 'Xác thực',
+      title: 'Authentication',
       type: 'item',
       url: '/login',
       icon: icons.LoginOutlined,
@@ -24,10 +25,10 @@ const pages = {
     },
     {
       id: 'register1',
-      title: 'Đăng ký',
+      title: 'Register',
       type: 'item',
       url: '/register',
-      icon: icons.ProfileOutlined,
+      icon: icons.UploadOutlined,
       target: true
     }
   ]
